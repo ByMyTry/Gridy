@@ -30,7 +30,7 @@ public class PlayActivity extends AppCompatActivity {
     static {
         System.loadLibrary("lbr");
     }
-    private native String getMessageFromNative();
+    //private native String getMessageFromNative();
 
     private GestureDetector initGestureDetector() {
         return new GestureDetector(new GestureDetector.SimpleOnGestureListener() {
@@ -46,7 +46,18 @@ public class PlayActivity extends AppCompatActivity {
 
     private void showToast(String phrase){
         Toast.makeText(getApplicationContext(), phrase, Toast.LENGTH_SHORT).show();
+        //C1 c1 = C::g;
     }
+    /*
+    interface C1{
+        public String f();
+    }
+
+    class C{
+        public String g(){
+            return "1";
+        }
+    }*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,7 +79,7 @@ public class PlayActivity extends AppCompatActivity {
             }
         });
 
-        final GameGrid gameGrid = new GameGrid(5, 5, this, R.id.gridview);
+        final GameGrid gameGrid = new GameGrid(4, 3, this, R.id.gridview);
         gameGrid.renderGrid();
         this.findViewById(R.id.playbutton).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -154,7 +165,8 @@ public class PlayActivity extends AppCompatActivity {
         String name = dbCursor.getString(dbCursor.getColumnIndex("name"));
         Integer group = dbCursor.getInt(dbCursor.getColumnIndex("groupp"));
         TextView tv = (TextView)this.findViewById(R.id.textview);
-        tv.setText(name + '\n' + group + '\n' + getMessageFromNative());
+        tv.setText(name + '\n' + group + '\n');
+        //tv.setText(name + '\n' + group + '\n' + getMessageFromNative());
     }
 
     @Override

@@ -24,11 +24,14 @@
 
     <GridView
         android:id="@+id/gridview"
-        android:layout_width="280dp"
-        android:layout_height="280dp"
-        android:horizontalSpacing="4dp"
-        android:verticalSpacing="4dp"
-        android:padding="4dp"
+        android:columnWidth="50dp"
+        android:layout_width="230dp"
+        android:layout_height="230dp"
+        android:horizontalSpacing="10dp"
+        android:verticalSpacing="10dp"
+        android:stretchMode="none"
+        android:gravity="center"
+        android:layout_marginBottom="20dp"
         android:background="@color/colorGray"/>
     <FrameLayout
         android:layout_height="wrap_content"

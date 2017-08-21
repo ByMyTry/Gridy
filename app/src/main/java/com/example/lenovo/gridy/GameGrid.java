@@ -32,8 +32,7 @@ public class GameGrid {
         );
     }
 
-    private ArrayList<Boolean> generateGridData(int size)
-    {
+    private ArrayList<Boolean> generateGridData(int size) {
         ArrayList<Boolean> res = new ArrayList<>();
         for(int i = 0; i < size * size; i++)
             res.add(false);
