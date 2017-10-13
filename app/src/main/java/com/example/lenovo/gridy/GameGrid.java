@@ -80,7 +80,7 @@ public class GameGrid {
         };
     }
 
-    public void choiceTraps()
+    public void choiceNewTraps()
     {
         this.traps = new ArrayList<Integer>();
         Random random = new Random();
@@ -102,10 +102,34 @@ public class GameGrid {
         this.grid.setOnItemClickListener(this.itemListener);
     }
 
-    public void rotateGrid()
+    public void changeGrid()
+    //public void changeGrid(IGridChanger gridChanger)
     {
         Animation animation = AnimationUtils.loadAnimation(this.activity, R.anim.animation);
+        /*class AnimationWatcher{
+            public boolean isEnded = false;
+        }
+        final AnimationWatcher animationWatcher = new AnimationWatcher();
+        animation.setAnimationListener(new Animation.AnimationListener(){
+            @Override
+            public void onAnimationStart(Animation animation) {
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                animationWatcher.isEnded = true;
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+            }
+        });*/
         this.grid.startAnimation(animation);
+        /*while(!animationWatcher.isEnded){
+            Thread.sleep(100);
+        }*/
+        //gridChanger.changeData();
+        //gridChanger.changeUI();
     }
 
     public void showTraps(){

@@ -84,11 +84,10 @@ public class PlayActivity extends AppCompatActivity {
         this.findViewById(R.id.playbutton).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                gameGrid.choiceTraps();
+                gameGrid.choiceNewTraps();
                 gameGrid.showTraps();
                 new ShowTask().execute(gameGrid);
                 v.setVisibility(View.INVISIBLE);
-                PlayActivity.this.findViewById(R.id.trybutton).setVisibility(View.VISIBLE);
             }
         });
 
@@ -122,12 +121,13 @@ public class PlayActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(Void unused) {
             this.grid.hideTraps();
-            this.grid.rotateGrid();
+            this.grid.changeGrid();
             /*View v1 = PlayActivity.this.findViewById(R.id.ll);
             Animation animation = AnimationUtils.loadAnimation(PlayActivity.this, R.anim.animation);
             v1.startAnimation(animation);*/
             View v = PlayActivity.this.findViewById(R.id.trybutton);
-            ((Button)v).setText("try");
+            v.setVisibility(View.VISIBLE);
+            //((Button)v).setText("try");
         }
     }
 
