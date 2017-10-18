@@ -121,10 +121,12 @@ public class PlayActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(Void unused) {
             this.grid.hideTraps();
-            this.grid.changeGrid();
-            /*View v1 = PlayActivity.this.findViewById(R.id.ll);
-            Animation animation = AnimationUtils.loadAnimation(PlayActivity.this, R.anim.animation);
-            v1.startAnimation(animation);*/
+            IGridChanger[] level = new IGridChanger[]{
+                    new GridLeftRotator(PlayActivity.this, R.id.gridview),
+                    new GridHorizontalRotator(PlayActivity.this, R.id.gridview),
+            };
+            for(IGridChanger gridChanger : level)
+                this.grid.changeGrid(gridChanger);
             View v = PlayActivity.this.findViewById(R.id.trybutton);
             v.setVisibility(View.VISIBLE);
             //((Button)v).setText("try");

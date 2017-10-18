@@ -57,12 +57,12 @@ public class GameGrid {
         }
     }
 
-    GameGrid(int size, int trapCount, AppCompatActivity activity, int id)
+    GameGrid(int size, int trapCount, AppCompatActivity activity, int gridId)
     {
         this.size = size;
         this.trapCount = trapCount;
         this.activity = activity;
-        this.grid = (GridView) this.activity.findViewById(id);
+        this.grid = (GridView) this.activity.findViewById(gridId);
         this.gridData = this.generateGridData(size);
         this.itemListener = new AdapterView.OnItemClickListener(){
             @Override
@@ -102,34 +102,36 @@ public class GameGrid {
         this.grid.setOnItemClickListener(this.itemListener);
     }
 
-    public void changeGrid()
-    //public void changeGrid(IGridChanger gridChanger)
+    //public void changeGrid()
+    public void changeGrid(IGridChanger gridChanger)
     {
-        Animation animation = AnimationUtils.loadAnimation(this.activity, R.anim.animation);
+//        Animation left_rotate = AnimationUtils.loadAnimation(this.activity, R.anim.left_rotate);
         /*class AnimationWatcher{
             public boolean isEnded = false;
         }
         final AnimationWatcher animationWatcher = new AnimationWatcher();
-        animation.setAnimationListener(new Animation.AnimationListener(){
+        left_rotate.setAnimationListener(new Animation.AnimationListener(){
             @Override
-            public void onAnimationStart(Animation animation) {
+            public void onAnimationStart(Animation left_rotate) {
             }
 
             @Override
-            public void onAnimationEnd(Animation animation) {
+            public void onAnimationEnd(Animation left_rotate) {
                 animationWatcher.isEnded = true;
             }
 
             @Override
-            public void onAnimationRepeat(Animation animation) {
+            public void onAnimationRepeat(Animation left_rotate) {
             }
         });*/
-        this.grid.startAnimation(animation);
+//        this.grid.startAnimation(left_rotate);
         /*while(!animationWatcher.isEnded){
             Thread.sleep(100);
         }*/
-        //gridChanger.changeData();
-        //gridChanger.changeUI();
+        this.traps = gridChanger.changeData(this.size, this.traps);
+        gridChanger.changeUI();
+        //this.traps = this.changeData(this.size, this.traps);
+        //this.startAnimation(R.anim.left_rotate);
     }
 
     public void showTraps(){
