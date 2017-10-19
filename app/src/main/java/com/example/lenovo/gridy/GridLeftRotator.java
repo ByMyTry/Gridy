@@ -35,9 +35,11 @@ public class GridLeftRotator implements IGridChanger {
     }
 
     @Override
-    public void changeUI(){
+    public Animation changeUI(){
         Animation animation = AnimationUtils.loadAnimation(this.activity, R.anim.left_rotate);
         animation.setFillAfter(false);
-        this.grid.startAnimation(animation);
+        animation.setDuration(this.activity.getResources().getInteger(R.integer.one_anim_duration));
+        //this.grid.startAnimation(animation);
+        return animation;
     }
 }

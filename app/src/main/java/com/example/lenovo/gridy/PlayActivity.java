@@ -7,14 +7,21 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.animation.Animation;
 import android.widget.Button;
+import android.widget.GridView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.concurrent.ExecutionException;
 
 
 public class PlayActivity extends AppCompatActivity {
@@ -46,18 +53,35 @@ public class PlayActivity extends AppCompatActivity {
 
     private void showToast(String phrase){
         Toast.makeText(getApplicationContext(), phrase, Toast.LENGTH_SHORT).show();
-        //C1 c1 = C::g;
-    }
-    /*
-    interface C1{
-        public String f();
     }
 
-    class C{
-        public String g(){
-            return "1";
+    private void makeAnimationChain(final ArrayList<Animation> animations, int gridId, final GameGrid gameGrid){
+        final GridView grid = (GridView) this.findViewById(gridId);
+        final int length = animations.size();
+        final int[] kostil = new int[]{0};
+        for(int i = 0; i < length; i++) {
+            animations.get(i).setAnimationListener(new Animation.AnimationListener() {
+                @Override
+                public void onAnimationEnd(Animation animation) {
+                    int i = kostil[0];
+                    if(i < length - 1)
+                        grid.startAnimation(animations.get(i + 1));
+                    else {
+                        View v1 = PlayActivity.this.findViewById(R.id.trybutton);
+                        v1.setVisibility(View.VISIBLE);
+                        gameGrid.unblokeGrid();
+                    }
+                    kostil[0] += 1;
+                }
+
+                @Override
+                public void onAnimationStart(Animation animation) {}
+
+                @Override
+                public void onAnimationRepeat(Animation animation) {}
+            });
         }
-    }*/
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,10 +108,11 @@ public class PlayActivity extends AppCompatActivity {
         this.findViewById(R.id.playbutton).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                gameGrid.blokeGrid();
+                v.setVisibility(View.INVISIBLE);
                 gameGrid.choiceNewTraps();
                 gameGrid.showTraps();
                 new ShowTask().execute(gameGrid);
-                v.setVisibility(View.INVISIBLE);
             }
         });
 
@@ -109,26 +134,31 @@ public class PlayActivity extends AppCompatActivity {
     }
 
     class ShowTask extends AsyncTask<GameGrid, Void, Void>{
-        private GameGrid grid;
+        private GameGrid gameGrid;
 
         @Override
         protected Void doInBackground(GameGrid... params) {
+            this.gameGrid = params[0];
             SystemClock.sleep(2000);
-            this.grid = params[0];
             return null;
         }
 
         @Override
         protected void onPostExecute(Void unused) {
-            this.grid.hideTraps();
+            gameGrid.hideTraps();
             IGridChanger[] level = new IGridChanger[]{
                     new GridLeftRotator(PlayActivity.this, R.id.gridview),
                     new GridHorizontalRotator(PlayActivity.this, R.id.gridview),
             };
+            ArrayList<Animation> animations = new ArrayList<Animation>();
             for(IGridChanger gridChanger : level)
-                this.grid.changeGrid(gridChanger);
-            View v = PlayActivity.this.findViewById(R.id.trybutton);
-            v.setVisibility(View.VISIBLE);
+                animations.add(
+                        gameGrid.changeGrid(gridChanger)
+                );
+
+            makeAnimationChain(animations, R.id.gridview, gameGrid);
+            GridView grid = (GridView) PlayActivity.this.findViewById(R.id.gridview);
+            grid.startAnimation(animations.get(0));
             //((Button)v).setText("try");
         }
     }

@@ -12,6 +12,7 @@ import android.widget.ArrayAdapter;
 import android.widget.GridView;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Random;
 
 public class GameGrid {
@@ -102,36 +103,10 @@ public class GameGrid {
         this.grid.setOnItemClickListener(this.itemListener);
     }
 
-    //public void changeGrid()
-    public void changeGrid(IGridChanger gridChanger)
+    public Animation changeGrid(IGridChanger gridChanger)
     {
-//        Animation left_rotate = AnimationUtils.loadAnimation(this.activity, R.anim.left_rotate);
-        /*class AnimationWatcher{
-            public boolean isEnded = false;
-        }
-        final AnimationWatcher animationWatcher = new AnimationWatcher();
-        left_rotate.setAnimationListener(new Animation.AnimationListener(){
-            @Override
-            public void onAnimationStart(Animation left_rotate) {
-            }
-
-            @Override
-            public void onAnimationEnd(Animation left_rotate) {
-                animationWatcher.isEnded = true;
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation left_rotate) {
-            }
-        });*/
-//        this.grid.startAnimation(left_rotate);
-        /*while(!animationWatcher.isEnded){
-            Thread.sleep(100);
-        }*/
         this.traps = gridChanger.changeData(this.size, this.traps);
-        gridChanger.changeUI();
-        //this.traps = this.changeData(this.size, this.traps);
-        //this.startAnimation(R.anim.left_rotate);
+        return gridChanger.changeUI();
     }
 
     public void showTraps(){
@@ -143,8 +118,19 @@ public class GameGrid {
     public void hideTraps(){
         for(int i = 0; i < this.trapCount; i++)
             this.grid.getChildAt(this.traps.get(i)).setBackgroundColor(GameGrid.this.activity.getResources().getColor(R.color.colorBlack));
+    }
+
+    public void blokeGrid(){
+        this.grid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {}
+        });
+    }
+
+    public void unblokeGrid(){
         this.grid.setOnItemClickListener(this.itemListener);
     }
+
 
     public Boolean test()
     {
